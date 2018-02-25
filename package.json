@@ -1,0 +1,19 @@
+{
+  "name": "racunninja",
+  "version": "1.0.0",
+  "description": "Household income application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinokeco/racunninja.git"
+  },
+  "author": "dino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dinokeco/racunninja/issues"
+  },
+  "homepage": "https://github.com/dinokeco/racunninja#readme"
+}
