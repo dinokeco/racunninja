@@ -1,1 +1,1 @@
-console.log('dino i beca');
+console.log('dino i beca ssh');
