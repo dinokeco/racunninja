@@ -1,8 +1,19 @@
 app.controller('sidebarCtrl', function($scope, $location){
-    console.log("Hello from angular controller "+ $location.path());
-
     $scope.getClass = function (path) {
+        if (path == '/dashboard' && $location.path() == '/') return 'active';
         return ($location.path() === path) ? 'active' : '';
+    },
+
+    $scope.openNavigationDrawer = function(){
+        if ($scope.mobileNavigationOpen == 'nav-open'){
+            $scope.mobileNavigationOpen = '';
+        }else{
+            $scope.mobileNavigationOpen = 'nav-open';
+        }
+        
+    }
+    $scope.menuItemClicked = function(){
+        $scope.mobileNavigationOpen = '';
     }
 
 });
