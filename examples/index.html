@@ -94,23 +94,34 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
 
+<script src="controllers/dashboard-controller.js"></script>
+<script src="controllers/table-controller.js"></script>
+<script src="controllers/user-controller.js"></script>
+
 <script>
     var app = angular.module("racunninja-app", ["ngRoute"]);
+    
+    app.controller('dashboardController', DashboardController);
+    app.controller('userController', UserController);
+    app.controller('tableController', TableController);
+
     app.config(function($routeProvider) {
         $routeProvider
         .when("/", {
-            templateUrl : "views/dashboard.html"
-            //controller : "dashboardController"
+            templateUrl : "views/dashboard.html",
+            controller : "dashboardController"
         })
         .when("/dashboard", {
-            templateUrl : "views/dashboard.html"
-            //controller : "dashboardController"
+            templateUrl : "views/dashboard.html",
+            controller : "dashboardController"
         })
         .when("/user", {
-            templateUrl : "views/user.html"
+            templateUrl : "views/user.html",
+            controller : "userController"
         })
         .when("/table", {
-            templateUrl : "views/table.html"
+            templateUrl : "views/table.html",
+            controller : "tableController"
         });
     });
     </script>

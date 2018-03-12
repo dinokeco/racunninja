@@ -1,5 +1,5 @@
 function DashboardController($scope, $http){
-    console.log("Hello from angular controller");
+    console.log("Hello from dashboard controller");
   /*
     var refresh = function (){
       $http.get('/contacts').success(function(response){
