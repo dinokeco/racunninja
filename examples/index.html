@@ -18,6 +18,7 @@
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <link href="https://vitalets.github.io/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
 </head>
 
 <body>
@@ -30,14 +31,15 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+<script src="https://vitalets.github.io/angular-xeditable/dist/js/xeditable.min.js"></script>
 
 <script src="controllers/dashboard-controller.js"></script>
 <script src="controllers/table-controller.js"></script>
 <script src="controllers/user-controller.js"></script>
 
 <script>
-    var app = angular.module("racunninja-app", ["ngRoute"]);
-    
+    var app = angular.module("racunninja-app", ["ngRoute","xeditable"]);
+
     app.controller('dashboardController', DashboardController);
     app.controller('userController', UserController);
     app.controller('tableController', TableController);

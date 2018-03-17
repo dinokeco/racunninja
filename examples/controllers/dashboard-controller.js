@@ -1,42 +1,54 @@
 function DashboardController($scope, $http){
     console.log("Hello from dashboard controller");
-  /*
-    var refresh = function (){
-      $http.get('/contacts').success(function(response){
-        console.log('i got data from server');
-        $scope.contact_list = response;
-        $scope.contact = "";
-      })
+
+    var init = function(){
+      get_bills();
+      get_providers();
+    }
+    var get_bills = function (){
+      $http.get('/rest/v1/bills').then(function(response){
+        $scope.bills = response.data;
+      }),function(response){
+        alert(response.status);
+      }
     };
-    refresh();
-  
-    $scope.add_contact = function(){
-      console.log($scope.contact);
-      $http.post('/contact', $scope.contact).success(function(response){
+    var get_providers = function (){
+      $http.get('/rest/v1/providers').then(function(response){
+        $scope.providers = response.data;
+      }),function(response){
+        alert(response.status);
+      }
+    };
+
+    init();
+
+    $scope.delete_provider = function(id){
+      $http.delete('/rest/v1/provider/delete/'+id).then(function(response){
+        for(i=0; i < $scope.providers.length; i++){
+          if($scope.providers[i].id == id){
+            $scope.providers.splice(i, 1);
+          }
+        }
         console.log(response);
-        refresh();
+      }, function(error){
+        console.log(error);
       });
     }
-  
-    $scope.remove_contact = function(contact_id){
-      console.log('remove '+ contact_id);
-      $http.delete('/contact/'+contact_id).success(function(response){
-        refresh();
+    $scope.edit_provider = function(provider){
+      $http.put('/rest/v1/provider/edit', provider).then(function(response){
+        console.log(response);
+      }, function(error){
+        console.log(error);
       });
     }
-  
-    $scope.edit_contact = function (contact_id){
-      $http.get('/contact/'+contact_id).success(function(response){
-        $scope.contact = response;
+    $scope.add_provider = function(){
+      $scope.provider.id = $scope.providers.length + 20;
+      $http.post('/rest/v1/provider', $scope.provider).then(function(response){
+        $scope.providers.push($scope.provider);
+        $scope.provider = null;
+        console.log(response);
+      }, function(error){
+        console.log(error);
       });
     }
-  
-    $scope.update_contact = function (){
-      console.log($scope.contact._id);
-      $http.put('contact/'+$scope.contact._id, $scope.contact).success(function(response){
-        refresh();
-      });
-    }
-  */
   }
-  
