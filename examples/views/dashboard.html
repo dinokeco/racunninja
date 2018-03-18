@@ -161,6 +161,7 @@
                           </thead>
                           <tbody>
                             <tr>
+                              <form>
                                 <td>
                                   <input ng-model="provider.name" type="text" class="form-control" placeholder="">
                                 </td>
@@ -168,10 +169,11 @@
                                   <input ng-model="provider.reference_number" type="text" class="form-control" placeholder="">
                                 </td>
                                 <td class="td-actions text-right">
-                                  <button ng-click="add_provider()" type="button" rel="tooltip" title="Add" class="btn btn-success btn-simple btn-lg">
+                                  <button ng-click="add_provider()" type="submit" rel="tooltip" title="Add" class="btn btn-success btn-simple btn-lg">
                                       <i class="material-icons">add</i>
                                   </button>
                                 </td>
+                              </form>
                               </tr>
                             <tr ng-repeat="provider in providers">
                               <td><a href="#" editable-text="provider.name" onbeforesave="edit_provider(provider,provider)">{{provider.name}}</a></td>

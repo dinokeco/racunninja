@@ -6,24 +6,33 @@
                 <p class="category">Complete your profile</p>
             </div>
             <div class="card-content">
-                <form>
+                <form name="add_user_form">
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">
-                                <label class="control-label">Company (disabled)</label>
-                                <input type="text" class="form-control" disabled>
+                                <label class="control-label">Company</label>
+                                <input name="company" class="form-control" ng-model="company" required>
+                                <span ng-show="add_user_form.company.$touched && add_user_form.company.$invalid">The name is required.</span>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                 <label class="control-label">Username</label>
-                                <input type="text" class="form-control">
+                                <input name="username" class="form-control" ng-model="username" required minlength="4">
+                                <span style="color:red" ng-show="add_user_form.username.$touched && add_user_form.username.$invalid">
+                                  <span ng-show="add_user_form.username.$error.required">Username is required.</span>
+                                  <span ng-show="add_user_form.username.$error.minlength">Username has to be at least 4 characters long.</span>
+                                </span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                 <label class="control-label">Email address</label>
-                                <input type="email" class="form-control">
+                                <input type="email" name="email" ng-model="email" class="form-control" required>
+                                <span style="color:red" ng-show="add_user_form.email.$dirty && add_user_form.email.$invalid">
+                                  <span ng-show="add_user_form.email.$error.required">Email is required.</span>
+                                  <span ng-show="add_user_form.email.$error.email">Invalid email address.</span>
+                                </span>
                             </div>
                         </div>
                     </div>
