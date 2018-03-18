@@ -25,7 +25,12 @@
                         <p>Table List</p>
                     </a>
                 </li>
-
+                <li ng-class="getClass('/providers')">
+                    <a href="#!providers" ng-click="menuItemClicked()">
+                        <i class="material-icons">content_paste</i>
+                        <p>Providers</p>
+                    </a>
+                </li>
                 <li>
                     <a href="#" ng-click="logout()">
                         <i class="material-icons">power_settings_new</i>
