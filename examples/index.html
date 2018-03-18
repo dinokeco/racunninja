@@ -29,16 +29,17 @@
         <div ng-include="'racunninja.html'"></div>
     </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-<script src="https://vitalets.github.io/angular-xeditable/dist/js/xeditable.min.js"></script>
+<script src="assets/js/angular.min.js"></script>
+<script src="assets/js/angular-route.js"></script>
+<script src="assets/js/xeditable.min.js"></script>
+<script src="assets/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
 
 <script src="controllers/dashboard-controller.js"></script>
 <script src="controllers/table-controller.js"></script>
 <script src="controllers/user-controller.js"></script>
 
 <script>
-    var app = angular.module("racunninja-app", ["ngRoute","xeditable"]);
+    var app = angular.module("racunninja-app", ["ngRoute", "xeditable", "ui.bootstrap"]);
 
     app.controller('dashboardController', DashboardController);
     app.controller('userController', UserController);
