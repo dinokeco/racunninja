@@ -4,6 +4,7 @@ function DashboardController($scope, $http){
     var init = function(){
       get_bills();
       get_providers();
+      //get_countries_php();
     }
     var get_bills = function (){
       $http.get('/rest/v1/bills').then(function(response){
@@ -17,6 +18,14 @@ function DashboardController($scope, $http){
         $scope.providers = response.data;
       }),function(response){
         alert(response.status);
+      }
+    };
+
+    var get_countries_php = function (){
+      $http.get("http://localhost/weblab/data.php").then(function(response){
+        $scope.countries = response.data;
+      }),function(response){
+        alert('ERROR');
       }
     };
 

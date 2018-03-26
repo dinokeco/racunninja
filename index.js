@@ -12,7 +12,25 @@ providers = [
   {'id':3,'name': 'Kablovska','reference_number': 'TSA9128'}
 ]
 
-app.get('/rest/v1/bills', function(request, response){
+app.post('/rest/v1/login', function(request, response, next){
+  console.log('Validating credentials by middleware function');
+  next();
+}, function(request, response){
+  var user = request.body;
+  if(user.username == 'becir@gmail.com' && user.password == '123'){
+    response.send(true)
+  }else{
+    response.send(false);
+  }
+});
+
+app.get('/rest/v1/bills', function(request, response, next){
+  console.log('Event received, call next function');
+  next();
+}, function(request, response, next){
+  console.log('Second function called');
+  next();
+}, function(request, response){
   response.setHeader('Content-Type', 'application/json');
   response.send([
     {'name': 'Vodovod','debt': 200},

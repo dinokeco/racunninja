@@ -317,4 +317,27 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="orange">
+                <h4 class="title">PHP Example</h4>
+                <p class="category">PHP Example</p>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-warning">
+                        <th>Country name</th>
+                        <th>Country Code</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="country in countries">
+                            <td>{{country.name}}</td>
+                            <td>{{country.country_code}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

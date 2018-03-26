@@ -1,7 +1,19 @@
-app.controller('sidebarCtrl', function($scope, $location){
+app.controller('sidebarCtrl', function($scope, $location, $http){
 
-    $scope.login = function(){
-        $scope.myVar = true;
+    $scope.login = function(credentials){
+        $http({
+            url: '/rest/v1/login',
+            method: "POST",
+            data: credentials
+        }).then(function(response){
+            if(response.data == true){
+                $scope.myVar = true;
+            }else{
+                $scope.myVar = false;
+            }
+        }, function(error){
+            console.log(error);
+        });
     }
 
     $scope.logout = function(){
