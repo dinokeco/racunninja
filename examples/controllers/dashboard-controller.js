@@ -33,29 +33,22 @@ function DashboardController($scope, $http){
 
     $scope.delete_provider = function(id){
       $http.delete('/rest/v1/provider/delete/'+id).then(function(response){
-        for(i=0; i < $scope.providers.length; i++){
-          if($scope.providers[i].id == id){
-            $scope.providers.splice(i, 1);
-          }
-        }
-        console.log(response);
+        get_providers();
       }, function(error){
         console.log(error);
       });
     }
     $scope.edit_provider = function(provider){
       $http.put('/rest/v1/provider/edit', provider).then(function(response){
-        console.log(response);
+        get_providers();
       }, function(error){
         console.log(error);
       });
     }
     $scope.add_provider = function(){
-      $scope.provider.id = $scope.providers.length + 20;
       $http.post('/rest/v1/provider', $scope.provider).then(function(response){
-        $scope.providers.push($scope.provider);
         $scope.provider = null;
-        console.log(response);
+        get_providers();
       }, function(error){
         console.log(error);
       });
