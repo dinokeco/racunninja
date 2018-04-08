@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyparser = require("body-parser");
 const app = express();
+const MongoClient = require('mongodb').MongoClient
+
+var db;
 
 app.use('/', express.static('examples'));
 app.use(express.json());       // to support JSON-encoded bodies
@@ -12,10 +15,7 @@ providers = [
   {'id':3,'name': 'Kablovska','reference_number': 'TSA9128'}
 ]
 
-app.post('/rest/v1/login', function(request, response, next){
-  console.log('Validating credentials by middleware function');
-  next();
-}, function(request, response){
+app.post('/rest/v1/login', function(request, response){
   var user = request.body;
   if(user.username == 'becir@gmail.com' && user.password == '123'){
     response.send(true)
@@ -24,13 +24,12 @@ app.post('/rest/v1/login', function(request, response, next){
   }
 });
 
-app.get('/rest/v1/bills', function(request, response, next){
-  console.log('Event received, call next function');
-  next();
-}, function(request, response, next){
-  console.log('Second function called');
-  next();
-}, function(request, response){
+app.get('/rest/v1/bills', function(request, response){
+  db.collection('users').find().toArray((err, result) => {
+    if (err) return console.log(err)
+    console.log(result);
+  })
+
   response.setHeader('Content-Type', 'application/json');
   response.send([
     {'name': 'Vodovod','debt': 200},
@@ -72,4 +71,9 @@ app.get('/rest/v1/providers', function(request, response){
   response.send(providers);
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+MongoClient.connect('mongodb://localhost:27017/racunninja', (err, database) => {
+  if (err) return console.log(err)
+  db = database
+  app.listen(3000, () => console.log('Example app listening on port 3000!'))
+})
+
