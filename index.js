@@ -26,16 +26,11 @@ app.post('/rest/v1/login', function(request, response){
 });
 
 app.get('/rest/v1/bills', function(request, response){
-  db.collection('users').find().toArray((err, result) => {
-    if (err) return console.log(err)
-    console.log(result);
+  db.collection('bills').find().toArray((err, bills) => {
+    if (err) return console.log(err);
+    response.setHeader('Content-Type', 'application/json');
+    response.send(bills);
   })
-
-  response.setHeader('Content-Type', 'application/json');
-  response.send([
-    {'name': 'Vodovod','debt': 200},
-    {'name': 'Elektroprivreda','debt': 200}
-  ]);
 });
 
 app.post('/rest/v1/provider', function(request, response){
@@ -68,6 +63,31 @@ app.get('/rest/v1/providers', function(request, response){
     response.setHeader('Content-Type', 'application/json');
     response.send(providers);
   })
+});
+
+app.post('/rest/v1/bill', function(request, response){
+  db.collection('bills').save({'bill_number':request.body.bill_number,
+                               'provider_id':request.body.provider_id,
+                               'amount': request.body.amount,
+                               'date': new Date(request.body.date)}, (err, result) => {
+    if (err) return console.log(err);
+    response.send('OK');
+  })
+});
+
+app.get('/rest/v1/report', function(request, response){
+  db.collection('bills').aggregate(
+    [ 
+      { '$match': { "date": { '$exists': true } } },
+      { '$group': { "_id": { "year": { '$year': "$date"}, "month": {'$month': "$date"} }, "total": { '$sum' : "$amount"} } },
+      { '$sort' : { "_id.year" : -1, "_id.month" : -1 } }
+    ],
+  function(err, documents) {
+      if(err == null){
+        response.send(documents);
+      }
+    }
+  );
 });
 
 MongoClient.connect('mongodb://localhost:27017/racunninja', (err, database) => {
