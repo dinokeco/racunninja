@@ -1,28 +1,36 @@
-function DashboardController($scope, $http){
+function DashboardController($scope, $rootScope, $http){
     console.log("Hello from dashboard controller");
 
+    var config = {headers:  {
+      'Authorization': 'Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ==',
+      'Accept': 'application/json;odata=verbose',
+      "JWT" : localStorage.getItem('user')
+      }
+    };
+
     var init = function(){
+      console.log($rootScope);
       get_report();
       get_bills();
       get_providers();
       //get_countries_php();
     }
     var get_report = function (){
-      $http.get('/rest/v1/report').then(function(response){
+      $http.get('/rest/v1/report', config).then(function(response){
         $scope.report = response.data;
       }),function(response){
         alert(response.status);
       }
     };
     var get_bills = function (){
-      $http.get('/rest/v1/bills').then(function(response){
+      $http.get('/rest/v1/bills', config).then(function(response){
         $scope.bills = response.data;
-      }),function(response){
-        alert(response.status);
+      }),function(error){
+        alert(error.status);
       }
     };
     var get_providers = function (){
-      $http.get('/rest/v1/providers').then(function(response){
+      $http.get('/rest/v1/providers', config).then(function(response){
         $scope.providers = response.data;
       }),function(response){
         alert(response.status);
@@ -40,21 +48,21 @@ function DashboardController($scope, $http){
     init();
 
     $scope.delete_provider = function(id){
-      $http.delete('/rest/v1/provider/delete/'+id).then(function(response){
+      $http.delete('/rest/v1/provider/delete/'+id, config).then(function(response){
         get_providers();
       }, function(error){
         console.log(error);
       });
     }
     $scope.edit_provider = function(provider){
-      $http.put('/rest/v1/provider/edit', provider).then(function(response){
+      $http.put('/rest/v1/provider/edit', provider,config).then(function(response){
         get_providers();
       }, function(error){
         console.log(error);
       });
     }
     $scope.add_provider = function(){
-      $http.post('/rest/v1/provider', $scope.provider).then(function(response){
+      $http.post('/rest/v1/provider', $scope.provider, config).then(function(response){
         $scope.provider = null;
         get_providers();
       }, function(error){
@@ -63,7 +71,7 @@ function DashboardController($scope, $http){
     }
 
     $scope.add_bill = function(){
-      $http.post('/rest/v1/bill', $scope.bill).then(function(response){
+      $http.post('/rest/v1/bill', $scope.bill, config).then(function(response){
         $scope.bill = null;
         get_bills();
         get_report();

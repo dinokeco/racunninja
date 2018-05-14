@@ -2,7 +2,9 @@ const express = require('express');
 const bodyparser = require("body-parser");
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
+const jwt_secret = 'WU5CjF8fHxG40S2t7oyk';
 
+var jwt    = require('jsonwebtoken');
 var MongoId = require('mongodb').ObjectID;
 var db;
 
@@ -16,13 +18,47 @@ providers = [
   {'id':3,'name': 'Kablovska','reference_number': 'TSA9128'}
 ]
 
-app.post('/rest/v1/login', function(request, response){
+app.use('/rest/v1/',function(request,response,next){
+  jwt.verify(request.get('JWT'), jwt_secret, function(error, decoded) {      
+    if (error) {
+      response.status(401).send('Unauthorized access');    
+    } else {
+      db.collection("users").findOne({'_id': new MongoId(decoded._id)}, function(error, user) {
+        if (error){
+          throw error;
+        }else{
+          if(user){
+            next();
+          }else{
+            response.status(401).send('Credentials are wrong.');
+          }
+        }
+      });
+    }
+  });  
+})
+app.post('/login', function(request, response){
   var user = request.body;
-  if(user.username == 'becir@gmail.com' && user.password == '123'){
-    response.send(true)
-  }else{
-    response.send(false);
-  }
+
+  db.collection("users").findOne({'username': user.username, 'password': user.password}, function(error, user) {
+    if (error){
+      throw error;
+    }else{
+      if(user){
+        var token = jwt.sign(user, jwt_secret, {
+          expiresIn: 20000 
+        });
+    
+        response.send({
+          success: true,
+          message: 'Authenticated',
+          token: token
+        })
+      }else{
+        response.status(401).send('Credentials are wrong.');
+      }
+    }
+  });
 });
 
 app.get('/rest/v1/bills', function(request, response){
@@ -83,9 +119,8 @@ app.get('/rest/v1/report', function(request, response){
       { '$sort' : { "_id.year" : -1, "_id.month" : -1 } }
     ],
   function(err, documents) {
-      if(err == null){
-        response.send(documents);
-      }
+      if (err) return console.log(err);
+      response.send(documents);
     }
   );
 });

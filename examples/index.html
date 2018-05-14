@@ -22,10 +22,10 @@
 </head>
 
 <body>
-    <div ng-if="!myVar">
+    <div ng-if="!check_login()">
         <div ng-include="'login.html'"></div>
     </div>
-    <div ng-if="myVar">
+    <div ng-if="check_login()">
         <div ng-include="'racunninja.html'"></div>
     </div>
 </body>

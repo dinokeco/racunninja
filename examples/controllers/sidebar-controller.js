@@ -1,23 +1,22 @@
 app.controller('sidebarCtrl', function($scope, $location, $http){
 
+    $scope.check_login = function(){
+        if(localStorage.getItem('user')){
+            return true;
+        }
+        return false;
+    }
+
     $scope.login = function(credentials){
-        $http({
-            url: '/rest/v1/login',
-            method: "POST",
-            data: credentials
-        }).then(function(response){
-            if(response.data == true){
-                $scope.myVar = true;
-            }else{
-                $scope.myVar = false;
-            }
-        }, function(error){
+        $http.post('/login', credentials).then(function(response){
+            localStorage.setItem('user',response.data.token)
+        }),function(error){
             console.log(error);
-        });
+        }
     }
 
     $scope.logout = function(){
-        $scope.myVar = false;
+        localStorage.clear();
     }
 
     $scope.getClass = function (path) {
