@@ -1,25 +1,29 @@
 {
-  "name": "racunninja",
-  "version": "1.0.0",
-  "description": "Household income application",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dinokeco/racunninja.git"
-  },
-  "author": "dino",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/dinokeco/racunninja/issues"
-  },
-  "homepage": "https://github.com/dinokeco/racunninja#readme",
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.3",
-    "jsonwebtoken": "^8.2.1",
-    "mongodb": "^2.2.33"
-  }
+    "name": "racunninja",
+    "version": "1.0.0",
+    "description": "Household income application",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon server.js -e html,js,css",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dinokeco/racunninja.git"
+    },
+    "author": "dino",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dinokeco/racunninja/issues"
+    },
+    "homepage": "https://github.com/dinokeco/racunninja#readme",
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "express": "^4.16.3",
+        "jsonwebtoken": "^8.2.1",
+        "mongodb": "^2.2.33"
+    },
+    "devDependencies": {
+        "reload": "^2.3.1"
+    }
 }
