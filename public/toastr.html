@@ -1,0 +1,42 @@
+<!doctype html>
+<html ng-app="toastr-test">
+  <head>
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+    <script src="//unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <link rel="stylesheet" href="//unpkg.com/angular-toastr/dist/angular-toastr.css" />
+
+
+  </head>
+  <body>
+    <div ng-controller="ToasterCtrl as $ctrl" class="modal-demo">
+        <button type="button" class="btn btn-default" ng-click="$ctrl.success()">Success</button><br>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.info()">Info</button><br>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.warning()">Warning</button><br>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.error()">Error</button>
+    </div>
+  </body>
+  <script>
+    var app = angular.module('toastr-test', ['ngAnimate', 'toastr']);
+
+    app.controller('ToasterCtrl', function (toastr) {
+        this.success = function () {
+            toastr.success('Hello world!', 'Toastr fun!');
+        };
+
+        this.info = function(){
+            toastr.info('Hello world!', 'Toastr fun!');
+        };
+
+        this.warning = function(){
+            toastr.warning('Hello world!', 'Toastr fun!');
+        };
+
+        this.error = function(){
+            toastr.error('Hello world!', 'Toastr fun!');
+        };
+    });
+  </script>
+</html>

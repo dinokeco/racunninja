@@ -1,0 +1,63 @@
+<!doctype html>
+<html ng-app="modal-test">
+  <head>
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div ng-controller="ModalDemoCtrl as $ctrl" class="modal-demo">
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <ul>
+                    <li ng-repeat="item in $ctrl.items">
+                        {{ item }}
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+            </div>
+        </script>
+        
+
+        <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Open me!</button>
+    </div>
+  </body>
+  <script>
+    var app = angular.module('modal-test', ['ui.bootstrap']);
+
+    app.controller('ModalDemoCtrl', function ($scope, $uibModal, $rootScope) {
+        this.items = ['one', 'two', 'three', 'four', 'five'];
+        this.open = function () {
+            modalInstance = $uibModal.open({
+                templateUrl: 'myModalContent.html',
+                controller: 'ModalDemoCtrl',
+                controllerAs: '$ctrl',
+            });
+
+            modalInstance.result.then(function () {
+                console.log('Modal OK clicked');
+            }, function () {
+                console.log('Modal dismissed');
+            });
+
+            $rootScope.modalInstance = modalInstance;
+        };
+
+        this.ok = function(){
+            console.log('OK');
+            $rootScope.modalInstance.close();
+        };
+
+        this.cancel = function(){
+            console.log('CANCEL');
+            $rootScope.modalInstance.dismiss();
+        };
+    });
+  </script>
+</html>
