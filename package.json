@@ -18,12 +18,12 @@
     },
     "homepage": "https://github.com/dinokeco/racunninja#readme",
     "dependencies": {
-        "body-parser": "^1.18.2",
-        "express": "^4.16.3",
-        "jsonwebtoken": "^8.2.1",
-        "mongodb": "^2.2.33"
+        "body-parser": "^1.18.3",
+        "express": "^4.16.4",
+        "jsonwebtoken": "^8.4.0",
+        "mongodb": "^2.2.36"
     },
     "devDependencies": {
-        "reload": "^2.3.1"
+        "reload": "^2.4.0"
     }
 }
