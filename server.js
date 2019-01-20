@@ -1,17 +1,34 @@
 const express = require("express");
-const bodyparser = require("body-parser");
 const app = express();
 const MongoClient = require("mongodb").MongoClient;
+const morgan = require("morgan");
+const bodyparser = require("body-parser");
+const methodOverride = require("method-override");
 const reload = require("reload");
+
 const jwt_secret = "WU5CjF8fHxG40S2t7oyk";
 
 var jwt = require("jsonwebtoken");
 var MongoId = require("mongodb").ObjectID;
 var db;
 
+MongoClient.connect(
+    "mongodb://harismuha123:devdatabase123@ds161032.mlab.com:61032/racunninja",
+    (err, database) => {
+        if (err) return console.log(err);
+        db = database;
+        app.listen(5000, () => console.log("App listening on port 5000!"));
+    }
+);
+
 app.use("/", express.static("public"));
+app.use(morgan("dev"));
+app.use(bodyparser.urlencoded({ extended: "true" }));
+app.use(bodyparser.json());
+app.use(bodyparser.json({ type: "application/vnd.api+json" }));
 app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
+app.use(methodOverride());
 
 providers = [
     { id: 1, name: "Vodovod", reference_number: "ASB15215" },
@@ -41,6 +58,7 @@ app.use("/rest/v1/", function(request, response, next) {
         }
     });
 });
+
 app.post("/login", function(request, response) {
     var user = request.body;
 
@@ -160,14 +178,3 @@ app.get("/rest/v1/report", function(request, response) {
 });
 
 reload(app);
-
-MongoClient.connect(
-    "mongodb://localhost:27017/racunninja",
-    (err, database) => {
-        if (err) return console.log(err);
-        db = database;
-        app.listen(5000, () =>
-            console.log("Example app listening on port 5000!")
-        );
-    }
-);

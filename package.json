@@ -11,7 +11,7 @@
         "type": "git",
         "url": "git+https://github.com/dinokeco/racunninja.git"
     },
-    "author": "dino",
+    "author": "chern0",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/dinokeco/racunninja/issues"
@@ -21,7 +21,9 @@
         "body-parser": "^1.18.3",
         "express": "^4.16.4",
         "jsonwebtoken": "^8.4.0",
-        "mongodb": "^2.2.36"
+        "method-override": "^3.0.0",
+        "mongodb": "^2.2.36",
+        "morgan": "^1.9.1"
     },
     "devDependencies": {
         "reload": "^2.4.0"
