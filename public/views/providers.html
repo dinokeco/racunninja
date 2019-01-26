@@ -10,113 +10,41 @@
             </div>
             <div>
                 <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                    <div
+                        class="col-lg-3 col-md-6 col-sm-12 col-xs-12"
+                        ng-repeat="provider in userProviders track by $index"
+                    >
                         <div class="card card-stats">
-                            <div class="card-header" data-background-color="green">
-                                <img src="assets/img/epbih.png">
+                            <div
+                                class="card-header"
+                                data-background-color="green"
+                            >
+                                <img
+                                    src="{{ provider.logo }}"
+                                    style="width: 60px; height: 60px;"
+                                />
                             </div>
                             <div class="card-content">
-                                <p class="category">Struja</p>
-                                <h3 class="title">-34.25 KM</h3>
+                                <h3 class="title">{{ provider.name }}</h3>
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">date_range</i> Podaci od 12.03.2018 12:21:45
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                        <div class="card card-stats">
-                            <div class="card-header" data-background-color="red">
-                                <img src="assets/img/viksa.png">
-                            </div>
-                            <div class="card-content">
-                                <p class="category">Voda</p>
-                                <h3 class="title">-14.23 BAM</h3>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <i class="material-icons">date_range</i> Podaci od 12.03.2018 12:21:45
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                        <div class="card card-stats">
-                            <div class="card-header" data-background-color="blue">
-                                <img src="assets/img/toplane-sa.png">
-                            </div>
-                            <div class="card-content">
-                                <p class="category">Grijanje</p>
-                                <h3 class="title">0.34 KM</h3>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <i class="material-icons">date_range</i> Podaci od 12.03.2018 12:21:45
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                        <div class="card card-stats">
-                            <div class="card-header" data-background-color="orange">
-                                <img src="assets/img/kjkp-rad.png">
-                            </div>
-                            <div class="card-content">
-                                <p class="category">Smeće</p>
-                                <h3 class="title">-6.34 KM</h3>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <i class="material-icons">date_range</i> Podaci od 12.03.2018 12:21:45
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button ng-click="logger()" type="button" style="float: right; margin-right: 2%;" class="btn btn-primary"><i
-                        class="fa plus" aria-hidden="true"></i>
-                    Dodaj novi račun</button>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="red">
-                <i class="material-icons">home</i>
-            </div>
-            <div class="card-content card-content-left">
-                <p class="category">Han Ivica bb, Kiseljak</p>
-                <h3 class="title">Vikendica Lepenica</h3>
-            </div>
-            <div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                        <div class="card card-stats">
-                            <div class="card-header" data-background-color="green">
-                                <img src="assets/img/epbih.png">
-                            </div>
-                            <div class="card-content">
-                                <p class="category">Struja</p>
-                                <h3 class="title">-34.25 KM</h3>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <i class="material-icons">date_range</i> Podaci od 12.03.2018 12:21:45
+                                    <i class="material-icons">date_range</i>
+                                    Podaci od {{ fetchDate }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <button
+                type="button"
+                style="float: right; margin-right: 2%;"
+                class="btn btn-primary"
+                ng-click="toggleModal(true)"
+            >
+                <i class="fa plus" aria-hidden="true"></i> Dodaj novi račun
+            </button>
         </div>
     </div>
 </div>

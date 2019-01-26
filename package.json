@@ -18,12 +18,19 @@
     },
     "homepage": "https://github.com/dinokeco/racunninja#readme",
     "dependencies": {
+        "angular-popeye": "^1.0.5",
+        "angular-sweetalert-2": "^1.0.1",
+        "angularjs-toaster": "^3.0.0",
         "body-parser": "^1.18.3",
+        "cheerio": "^1.0.0-rc.2",
         "express": "^4.16.4",
         "jsonwebtoken": "^8.4.0",
         "method-override": "^3.0.0",
         "mongodb": "^2.2.36",
-        "morgan": "^1.9.1"
+        "morgan": "^1.9.1",
+        "puppeteer": "^1.11.0",
+        "request": "^2.88.0",
+        "request-promise": "^4.2.2"
     },
     "devDependencies": {
         "reload": "^2.4.0"

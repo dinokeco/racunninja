@@ -13,7 +13,7 @@ var MongoId = require("mongodb").ObjectID;
 var db;
 
 MongoClient.connect(
-    "mongodb://harismuha123:devdatabase123@ds161032.mlab.com:61032/racunninja",
+    "mongodb://localhost:27017/racunninja",
     (err, database) => {
         if (err) return console.log(err);
         db = database;
@@ -29,12 +29,6 @@ app.use(bodyparser.json({ type: "application/vnd.api+json" }));
 app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 app.use(methodOverride());
-
-providers = [
-    { id: 1, name: "Vodovod", reference_number: "ASB15215" },
-    { id: 2, name: "Elektroprivreda", reference_number: "SRAS8184" },
-    { id: 3, name: "Kablovska", reference_number: "TSA9128" }
-];
 
 app.use("/rest/v1/", function(request, response, next) {
     jwt.verify(request.get("JWT"), jwt_secret, function(error, decoded) {
@@ -59,6 +53,110 @@ app.use("/rest/v1/", function(request, response, next) {
     });
 });
 
+//TODO: Implement EPBIH parsing and import of data
+
+// app.get("/epbih", (req, res) => {
+//     const puppeteer = require("puppeteer");
+
+//     (async () => {
+//         const browser = await puppeteer.launch();
+//         const page = await browser.newPage();
+//         await page.goto("https://www.epbih.ba/profil/login");
+//         await page.waitForSelector('input[name="username"]');
+//         await page.type('input[name="username"]', "smuhibic");
+//         await page.type('input[name="password"]', "pGdE6e2aQZcdE8Y");
+//         await page.click('button[type="submit"]');
+
+//         await page._frameManager._mainFrame.waitForNavigation();
+
+//         const content = await page.content();
+
+//         res.send(content);
+//         // Add a wait for some selector on the home page to load to ensure the next step works correctly
+//         await browser.close();
+//     })();
+// });
+
+app.get("/rest/v1/telemach/overview/", (req, res) => {
+    const puppeteer = require("puppeteer");
+    const $ = require("cheerio");
+
+    //TODO: zamijeniti default podatke sa paramsima
+
+    (async () => {
+        var tempOverviewArray = [];
+        var finalOverviewArray = [];
+
+        var tempPaymentsArray = [];
+        var finalPaymentsArray = [];
+
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto("https://mojtelemach.ba/prijavi-se");
+        await page.waitForSelector('input[name="username"]');
+        await page.type('input[name="username"]', "harismuha123@gmail.com");
+        await page.type('input[name="password"]', "majmunica8");
+        await page.click('button[data-style="slide-down"]');
+
+        await page.waitForSelector('h1[class="dashboard-service-headline"]');
+        await page.goto("https://mojtelemach.ba/racuni/pregled-racuna");
+        // Add a wait for some selector on the home page to load to ensure the next step works correctly
+        const content = await page.content();
+
+        $(".r-table-cell", content).each(function() {
+            tempOverviewArray.push(
+                $(this)
+                    .text()
+                    .replace(/\n/g, "")
+                    .replace(/\t/g, "")
+                    .replace("Datum izdavanja računa:", "")
+                    .replace("Iznos:", "")
+            );
+        });
+
+        for (let index = 4; index < tempArray.length; index += 4) {
+            finalOverviewArray.push({
+                date: tempArray[index - 4],
+                debt: tempArray[index - 3],
+                paid: tempArray[index - 2]
+            });
+        }
+
+        await page.goto("https://mojtelemach.ba/racuni/moje-uplate");
+        await page.waitForXPath('//*[@id="page-wrap"]/div/section/div[1]/h2');
+        // Add a wait for some selector on the home page to load to ensure the next step works correctly
+        content = await page.content();
+
+        $(".r-table-cell", content).each(function() {
+            tempPaymentsArray.push(
+                $(this)
+                    .text()
+                    .replace(/\n/g, "")
+                    .replace(/\t/g, "")
+                    .replace("Mjesec:", "")
+                    .replace("Iznos:", "")
+            );
+        });
+
+        for (let index = 2; index < tempPaymentsArray.length; index += 2) {
+            finalPaymentsArray.push({
+                date: tempArray[index - 2],
+                paid: tempArray[index - 1]
+            });
+        }
+
+        await browser.close();
+        res.json({
+            user_id: req.query.user_id,
+            provider_id: req.query.provider_id,
+            bills: {
+                overview: finalOverviewArray,
+                payments: finalPaymentsArray
+            }
+        });
+    })();
+});
+
 app.post("/login", function(request, response) {
     var user = request.body;
 
@@ -73,10 +171,13 @@ app.post("/login", function(request, response) {
                         expiresIn: 20000
                     });
 
+                    console.log(user);
+
                     response.send({
                         success: true,
                         message: "Authenticated",
-                        token: token
+                        token: token,
+                        user_id: user._id
                     });
                 } else {
                     response.status(401).send("Credentials are wrong.");
@@ -96,13 +197,32 @@ app.get("/rest/v1/bills", function(request, response) {
         });
 });
 
-app.post("/rest/v1/provider", function(request, response) {
-    db.collection("providers").save(request.body, (err, result) => {
-        if (err) return console.log(err);
-        response.send("OK");
-    });
+app.post("/rest/v1/provider/add/:id", function(request, response) {
+    provider = request.body;
+    db.collection("users").findOneAndUpdate(
+        {
+            _id: new MongoId(request.params.id)
+        },
+        {
+            $addToSet: {
+                providers: provider
+            }
+        },
+        (err, result) => {
+            if (err) return console.log(err);
+
+            db.collection("users")
+                .find()
+                .toArray((err, user) => {
+                    if (err) return console.log(err);
+                    response.setHeader("Content-Type", "application/json");
+                    response.send(user);
+                });
+        }
+    );
 });
 
+// won't be used at this time
 app.put("/rest/v1/provider/edit", function(request, response) {
     provider = request.body;
     db.collection("providers").findOneAndUpdate(
@@ -132,11 +252,21 @@ app.delete("/rest/v1/provider/delete/:id", function(request, response) {
 
 app.get("/rest/v1/providers", function(request, response) {
     db.collection("providers")
-        .find()
+        .find({})
         .toArray((err, providers) => {
             if (err) return console.log(err);
             response.setHeader("Content-Type", "application/json");
             response.send(providers);
+        });
+});
+
+app.get("/rest/v1/users/:id", function(request, response) {
+    db.collection("users")
+        .find({ _id: new MongoId(request.params.id) })
+        .toArray((err, user) => {
+            if (err) return console.log(err);
+            response.setHeader("Content-Type", "application/json");
+            response.send(user);
         });
 });
 
