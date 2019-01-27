@@ -10,14 +10,6 @@ function StatisticsController($scope, $rootScope, $http) {
         }
     };
 
-    var config = {
-        headers: {
-            Authorization: "Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ==",
-            Accept: "application/json;odata=verbose",
-            JWT: localStorage.getItem("user")
-        }
-    };
-
     var get_user_by_id = function() {
         $http
             .get("/rest/v1/users/" + localStorage.getItem("userId"), config)

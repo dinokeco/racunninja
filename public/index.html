@@ -66,6 +66,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/3.0.0/toaster.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.4/angular-sanitize.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.6/ng-csv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+    <script src="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
 
     <script src="controllers/dashboard-controller.js"></script>
     <script src="controllers/table-controller.js"></script>
@@ -82,7 +84,8 @@
             "pathgather.popeye",
             "toaster",
             "ngSanitize",
-            "ngCsv"
+            "ngCsv",
+            "chart.js"
         ]);
 
         app.controller("dashboardController", DashboardController);

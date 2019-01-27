@@ -104,6 +104,7 @@ function ProviderController($scope, $rootScope, $http, Popeye, toaster) {
                         toaster.pop("success", "Podaci učitani!");
                     }),
                     function(err) {
+                        toaster.pop("error", "Neuspjela operacija!");
                         console.log(err);
                     };
                 toaster.pop("success", "Usluga dodana!");
