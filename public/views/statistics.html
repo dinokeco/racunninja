@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Ime usluge</label>
+            <select
+                class="form-control selectpicker"
+                data-style="btn btn-link"
+                id="exampleFormControlSelect1"
+                ng-model="provider"
+                ng-change="filterStatistics()"
+                ng-options="provider as provider.name for provider in userProviders track by provider._id"
+            >
+            </select>
+        </div>
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Statistika</h4>
+                <p class="category">Pregled računa</p>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table">
+                    <thead class="text-primary">
+                        <th><b>Prosječna potrošnja</b></th>
+                        <th><b>Ukupna potrošnja</b></th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="statistic in statistics track by $index">
+                            <td>{{ statistic.statistics.avg_spent }} KM</td>
+                            <td>{{ statistic.statistics.total_spent }} KM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

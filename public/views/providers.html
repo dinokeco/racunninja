@@ -5,10 +5,18 @@
                 <i class="material-icons">home</i>
             </div>
             <div class="card-content card-content-left">
-                <p class="category">Džemala Bijedića 86, 71000 Sarajevo</p>
-                <h3 class="title">Stan Čengić Vila</h3>
+                <p class="category">
+                    Usluge koje koristite svakodnevno, na jednom mjestu
+                </p>
+                <h3 class="title">Usluge</h3>
             </div>
             <div>
+                <div class="row" ng-show="isEmpty">
+                    <div class="col-md-12 text-center">
+                        Nijedna usluga nije dodana. Molimo vas da dodate novu
+                        uslugu
+                    </div>
+                </div>
                 <div class="row">
                     <div
                         class="col-lg-3 col-md-6 col-sm-12 col-xs-12"
@@ -43,7 +51,7 @@
                 class="btn btn-primary"
                 ng-click="toggleModal(true)"
             >
-                <i class="fa plus" aria-hidden="true"></i> Dodaj novi račun
+                <i class="fa plus" aria-hidden="true"></i> Dodaj novu uslugu
             </button>
         </div>
     </div>

@@ -64,11 +64,14 @@
     <script src="assets/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
     <script src="assets/js/popeye.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/3.0.0/toaster.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.4/angular-sanitize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.6/ng-csv.js"></script>
 
     <script src="controllers/dashboard-controller.js"></script>
     <script src="controllers/table-controller.js"></script>
     <script src="controllers/user-controller.js"></script>
     <script src="controllers/providerController.js"></script>
+    <script src="controllers/statistics-controller.js"></script>
     <script src="/reload/reload.js"></script>
 
     <script>
@@ -77,13 +80,16 @@
             "xeditable",
             "ui.bootstrap",
             "pathgather.popeye",
-            "toaster"
+            "toaster",
+            "ngSanitize",
+            "ngCsv"
         ]);
 
         app.controller("dashboardController", DashboardController);
         app.controller("userController", UserController);
         app.controller("tableController", TableController);
         app.controller("providerController", ProviderController);
+        app.controller("statisticsController", StatisticsController);
 
         app.config(function($routeProvider) {
             $routeProvider
@@ -106,6 +112,10 @@
                 .when("/providers", {
                     templateUrl: "views/providers.html",
                     controller: "providerController"
+                })
+                .when("/statistics", {
+                    templateUrl: "views/statistics.html",
+                    controller: "statisticsController"
                 });
         });
     </script>

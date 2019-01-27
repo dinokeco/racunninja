@@ -87,6 +87,25 @@ function ProviderController($scope, $rootScope, $http, Popeye, toaster) {
             )
             .then(function(response) {
                 $rootScope.user["providers"] = response.data[0].providers;
+                toaster.pop("info", "Učitavanje podataka u toku...");
+                $http
+                    .post(
+                        "/rest/v1/telemach/overview",
+                        {
+                            user_id: localStorage.getItem("userId"),
+                            provider_id: $scope.formData["provider_id"],
+                            username: $scope.formData.username,
+                            password: $scope.formData.password
+                        },
+                        config
+                    )
+                    .then(function(response) {
+                        console.log(response);
+                        toaster.pop("success", "Podaci učitani!");
+                    }),
+                    function(err) {
+                        console.log(err);
+                    };
                 toaster.pop("success", "Usluga dodana!");
 
                 filter_providers($rootScope.user, $rootScope.providers);

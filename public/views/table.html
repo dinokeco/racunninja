@@ -1,8 +1,20 @@
 <div class="row">
     <div class="col-md-12">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Ime usluge</label>
+            <select
+                class="form-control selectpicker"
+                data-style="btn btn-link"
+                id="exampleFormControlSelect1"
+                ng-model="provider"
+                ng-change="filterBills()"
+                ng-options="provider as provider.name for provider in userProviders track by provider._id"
+            >
+            </select>
+        </div>
         <div class="card">
             <div class="card-header" data-background-color="purple">
-                <h4 class="title">Telemach - računi</h4>
+                <h4 class="title">Računi</h4>
                 <p class="category">Pregled računa</p>
             </div>
             <div class="card-content table-responsive">
@@ -14,21 +26,30 @@
                     </thead>
                     <tbody>
                         <tr
-                            ng-repeat="report in telemachReports track by $index"
+                            ng-repeat="bill in bill.bills.overview track by $index"
                         >
-                            <td>{{ report.date }}</td>
-                            <td>{{ report.debt }}</td>
-                            <td class="text-primary">{{ report.paid }}</td>
+                            <td>{{ bill.date }}</td>
+                            <td>{{ bill.debt }}</td>
+                            <td class="text-primary">{{ bill.paid }}</td>
                         </tr>
                     </tbody>
                 </table>
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    ng-csv="bill.bills.overview"
+                    csv-header="['Datum izdavanja računa', 'Iznos', 'Plaćeno']"
+                    filename="Pregled računa.csv"
+                >
+                    Eksportuj kao CSV
+                </button>
             </div>
         </div>
     </div>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header" data-background-color="purple">
-                <h4 class="title">Telemach - uplate</h4>
+                <h4 class="title">Uplate</h4>
                 <p class="category">Pregled uplata</p>
             </div>
             <div class="card-content table-responsive">
@@ -38,12 +59,23 @@
                         <th>Iznos</th>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="payment in telemachPayments">
-                            <td>{{ payment.date }}</td>
-                            <td class="text-primary">{{ payment.paid }}</td>
+                        <tr
+                            ng-repeat="bill in bill.bills.payments track by $index"
+                        >
+                            <td>{{ bill.date }}</td>
+                            <td class="text-primary">{{ bill.paid }}</td>
                         </tr>
                     </tbody>
                 </table>
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    ng-csv="bill.bills.payments"
+                    csv-header="['Mjesec izdavanja računa', 'Iznos']"
+                    filename="Moje uplate.csv"
+                >
+                    Eksportuj kao CSV
+                </button>
             </div>
         </div>
     </div>

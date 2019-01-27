@@ -77,7 +77,7 @@ app.use("/rest/v1/", function(request, response, next) {
 //     })();
 // });
 
-app.get("/rest/v1/telemach/overview/", (req, res) => {
+app.post("/rest/v1/telemach/overview", (req, res) => {
     const puppeteer = require("puppeteer");
     const $ = require("cheerio");
 
@@ -94,14 +94,14 @@ app.get("/rest/v1/telemach/overview/", (req, res) => {
         const page = await browser.newPage();
         await page.goto("https://mojtelemach.ba/prijavi-se");
         await page.waitForSelector('input[name="username"]');
-        await page.type('input[name="username"]', "harismuha123@gmail.com");
-        await page.type('input[name="password"]', "majmunica8");
+        await page.type('input[name="username"]', String(req.body.username));
+        await page.type('input[name="password"]', String(req.body.password));
         await page.click('button[data-style="slide-down"]');
 
         await page.waitForSelector('h1[class="dashboard-service-headline"]');
         await page.goto("https://mojtelemach.ba/racuni/pregled-racuna");
         // Add a wait for some selector on the home page to load to ensure the next step works correctly
-        const content = await page.content();
+        var content = await page.content();
 
         $(".r-table-cell", content).each(function() {
             tempOverviewArray.push(
@@ -114,11 +114,11 @@ app.get("/rest/v1/telemach/overview/", (req, res) => {
             );
         });
 
-        for (let index = 4; index < tempArray.length; index += 4) {
+        for (let index = 4; index < tempOverviewArray.length; index += 4) {
             finalOverviewArray.push({
-                date: tempArray[index - 4],
-                debt: tempArray[index - 3],
-                paid: tempArray[index - 2]
+                date: tempOverviewArray[index - 4],
+                debt: tempOverviewArray[index - 3],
+                paid: tempOverviewArray[index - 2]
             });
         }
 
@@ -140,20 +140,28 @@ app.get("/rest/v1/telemach/overview/", (req, res) => {
 
         for (let index = 2; index < tempPaymentsArray.length; index += 2) {
             finalPaymentsArray.push({
-                date: tempArray[index - 2],
-                paid: tempArray[index - 1]
+                date: tempPaymentsArray[index - 2],
+                paid: tempPaymentsArray[index - 1]
             });
         }
 
         await browser.close();
-        res.json({
-            user_id: req.query.user_id,
-            provider_id: req.query.provider_id,
-            bills: {
-                overview: finalOverviewArray,
-                payments: finalPaymentsArray
+        db.collection("bills").insert(
+            {
+                user_id: req.body.user_id,
+                provider_id: req.body.provider_id,
+                bills: {
+                    overview: finalOverviewArray,
+                    payments: finalPaymentsArray
+                }
+            },
+            function(err, response) {
+                if (err) console.log(err);
+                console.log(response);
             }
-        });
+        );
+
+        res.send("OK");
     })();
 });
 
@@ -305,6 +313,67 @@ app.get("/rest/v1/report", function(request, response) {
             response.send(documents);
         }
     );
+});
+
+app.post("/rest/v1/statistics/", function(request, response) {
+    var totalSpent = 0;
+    var counter = 0;
+    db.collection("bills")
+        .find({ provider_id: request.body.provider_id })
+        .toArray(function(err, response) {
+            if (err) console.log(err);
+            response[0]["bills"].overview.forEach(function(item) {
+                totalSpent += parseFloat(item.debt.replace(" KM", ""));
+                counter += 1;
+            });
+            avgSpent = totalSpent / counter;
+            db.collection("statistics")
+                .find({})
+                .toArray(function(err, response) {
+                    if (err) console.log(err);
+                    if (response.length === 0) {
+                        db.collection("statistics").insert(
+                            {
+                                _id: request.body.provider_id,
+                                user_id: request.body.user_id,
+                                provider_id: request.body.provider_id,
+                                statistics: {
+                                    avg_spent: avgSpent.toFixed(2),
+                                    total_spent: totalSpent.toFixed(2)
+                                }
+                            },
+                            function(err, response) {
+                                if (err) console.log(err);
+                            }
+                        );
+                    } else {
+                        db.collection("statistics").save(
+                            {
+                                _id: request.body.provider_id,
+                                user_id: request.body.user_id,
+                                provider_id: request.body.provider_id,
+                                statistics: {
+                                    avg_spent: avgSpent.toFixed(2),
+                                    total_spent: totalSpent.toFixed(2)
+                                }
+                            },
+                            function(err, response) {
+                                if (err) console.log(err);
+                            }
+                        );
+                    }
+                });
+        });
+    response.send("OK");
+});
+
+app.get("/rest/v1/statistics/:provider_id", function(request, response) {
+    db.collection("statistics")
+        .find({ provider_id: request.params.provider_id })
+        .toArray(function(err, statistics) {
+            if (err) console.log(err);
+            response.send(statistics);
+        });
 });
 
 reload(app);
