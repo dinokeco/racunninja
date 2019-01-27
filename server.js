@@ -13,7 +13,7 @@ var MongoId = require("mongodb").ObjectID;
 var db;
 
 MongoClient.connect(
-    "mongodb://localhost:27017/racunninja",
+    "mongodb://hmuhibic:racunninja1@ds145750.mlab.com:45750/mean-database-2017",
     (err, database) => {
         if (err) return console.log(err);
         db = database;
