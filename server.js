@@ -53,6 +53,27 @@ app.use("/rest/v1/", function(request, response, next) {
     });
 });
 
+app.use((req, res, next) => {
+    const method = req.method;
+    const endpoint = req.originalUrl;
+
+    res.on("finish", () => {
+        const status = res.statusCode;
+        db.collection("logs").insert(
+            {
+                date: new Date(),
+                method,
+                endpoint,
+                status
+            },
+            function(err, response) {
+                if (err) console.log(err);
+            }
+        );
+    });
+    next();
+});
+
 //TODO: Implement EPBIH parsing and import of data
 
 // app.get("/epbih", (req, res) => {
