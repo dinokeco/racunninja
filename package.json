@@ -30,6 +30,7 @@
         "method-override": "^3.0.0",
         "mongodb": "^2.2.36",
         "morgan": "^1.9.1",
+        "nodemon": "^1.18.9",
         "puppeteer": "^1.11.0",
         "request": "^2.88.0",
         "request-promise": "^4.2.2"
