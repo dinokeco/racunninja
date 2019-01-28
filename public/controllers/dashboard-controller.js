@@ -83,8 +83,6 @@ function DashboardController($scope, $rootScope, $http, $location) {
     };
 
     var generate_feed = function() {
-        console.log($rootScope);
-
         get_user_by_id();
         get_bills();
 
@@ -115,7 +113,7 @@ function DashboardController($scope, $rootScope, $http, $location) {
             })
             .reverse();
         $scope.onClick = function(points, evt) {
-            console.log(points, evt);
+            return;
         };
     };
 

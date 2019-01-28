@@ -32,11 +32,9 @@ function StatisticsController($scope, $rootScope, $http) {
                 config
             )
             .then(function(response) {
-                console.log(response);
                 $http
                     .get("/rest/v1/statistics/" + provider_id, config)
                     .then(function(response) {
-                        console.log(response.data);
                         $rootScope.statistics = response.data;
                     }),
                     function(error) {
@@ -50,7 +48,6 @@ function StatisticsController($scope, $rootScope, $http) {
 
     var get_providers = function() {
         $http.get("/rest/v1/providers", config).then(function(response) {
-            console.log(response.data);
             $rootScope.providers = response.data;
             filter_providers($rootScope.user, $rootScope.providers);
         }),

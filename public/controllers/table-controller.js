@@ -1,6 +1,4 @@
 function TableController($scope, $rootScope, $http) {
-    console.log("Hello from table controller");
-
     $scope.provider = {};
     $rootScope.bill = {};
 
@@ -25,7 +23,6 @@ function TableController($scope, $rootScope, $http) {
 
     var get_bills = function() {
         $http.get("/rest/v1/bills", config).then(function(response) {
-            console.log(response.data);
             $rootScope.bills = response.data;
         }),
             function(error) {
@@ -35,7 +32,6 @@ function TableController($scope, $rootScope, $http) {
 
     var get_providers = function() {
         $http.get("/rest/v1/providers", config).then(function(response) {
-            console.log(response.data);
             $rootScope.providers = response.data;
             filter_providers($rootScope.user, $rootScope.providers);
         }),
@@ -49,7 +45,6 @@ function TableController($scope, $rootScope, $http) {
         user["providers"].forEach(function(provider) {
             providers.forEach(function(element) {
                 if (provider.provider_id === element._id) {
-                    console.log("yes");
                     $rootScope.userProviders.push(element);
                 }
             });
@@ -71,6 +66,5 @@ function TableController($scope, $rootScope, $http) {
                 $rootScope.bill = element;
             }
         });
-        console.log($rootScope.bill);
     };
 }

@@ -100,7 +100,6 @@ function ProviderController($scope, $rootScope, $http, Popeye, toaster) {
                         config
                     )
                     .then(function(response) {
-                        console.log(response);
                         toaster.pop("success", "Podaci učitani!");
                     }),
                     function(err) {

@@ -178,7 +178,6 @@ app.post("/rest/v1/telemach/overview", (req, res) => {
             },
             function(err, response) {
                 if (err) console.log(err);
-                console.log(response);
             }
         );
 
@@ -199,8 +198,6 @@ app.post("/login", function(request, response) {
                     var token = jwt.sign(user, jwt_secret, {
                         expiresIn: 20000
                     });
-
-                    console.log(user);
 
                     response.send({
                         success: true,
