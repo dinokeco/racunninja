@@ -1,6 +1,4 @@
-function TableController($scope, $rootScope, $http) {
-    console.log("Hello from table controller");
-
+function StatisticsController($scope, $rootScope, $http) {
     $scope.provider = {};
     $rootScope.bill = {};
 
@@ -23,11 +21,28 @@ function TableController($scope, $rootScope, $http) {
             };
     };
 
-    var get_bills = function() {
-        $http.get("/rest/v1/bills", config).then(function(response) {
-            console.log(response.data);
-            $rootScope.bills = response.data;
-        }),
+    var get_statistics = function(provider_id) {
+        $http
+            .post(
+                "/rest/v1/statistics/",
+                {
+                    user_id: localStorage.getItem("userId"),
+                    provider_id: provider_id
+                },
+                config
+            )
+            .then(function(response) {
+                console.log(response);
+                $http
+                    .get("/rest/v1/statistics/" + provider_id, config)
+                    .then(function(response) {
+                        console.log(response.data);
+                        $rootScope.statistics = response.data;
+                    }),
+                    function(error) {
+                        console.log(error);
+                    };
+            }),
             function(error) {
                 console.log(error);
             };
@@ -49,7 +64,6 @@ function TableController($scope, $rootScope, $http) {
         user["providers"].forEach(function(provider) {
             providers.forEach(function(element) {
                 if (provider.provider_id === element._id) {
-                    console.log("yes");
                     $rootScope.userProviders.push(element);
                 }
             });
@@ -58,19 +72,12 @@ function TableController($scope, $rootScope, $http) {
 
     var init = function() {
         get_user_by_id();
-        get_bills();
         get_providers();
     };
 
-    init();
-
-    $scope.filterBills = function() {
-        $rootScope.bill = {};
-        $rootScope.bills.forEach(element => {
-            if (element.provider_id === $scope.provider._id) {
-                $rootScope.bill = element;
-            }
-        });
-        console.log($rootScope.bill);
+    $scope.filterStatistics = function() {
+        get_statistics($scope.provider._id);
     };
+
+    init();
 }

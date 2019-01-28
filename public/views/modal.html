@@ -1,0 +1,47 @@
+<form>
+    <div class="row">
+        <div class="col-md-12"><h3>Dodaj uslugu</h3></div>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Ime usluge</label>
+        <select
+            class="form-control selectpicker"
+            data-style="btn btn-link"
+            id="exampleFormControlSelect1"
+            ng-model="formData.provider"
+            ng-options="provider as provider.name for provider in providers track by provider._id"
+        >
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Email addresa</label>
+        <input
+            type="email"
+            class="form-control"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+            ng-model="formData.username"
+        />
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput2">Šifra</label>
+        <input
+            type="password"
+            class="form-control"
+            id="exampleFormControlInput2"
+            ng-model="formData.password"
+        />
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button
+                type="button"
+                style="float: right; margin-right: 2%;"
+                class="btn btn-primary"
+                ng-click="addProvider()"
+            >
+                <i class="fa plus" aria-hidden="true"></i> Dodaj uslugu
+            </button>
+        </div>
+    </div>
+</form>
